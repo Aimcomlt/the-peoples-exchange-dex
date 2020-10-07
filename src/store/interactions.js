@@ -26,7 +26,9 @@ import Exchange from '../abis/Exchange.json'
 import { ETHER_ADDRESS } from '../helpers'
 
 export const loadWeb3 = (dispatch) => {
-  const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545')
+ // const testnet = `https://kovan.infura.io/517f641c37f244a7bee5627d76fefdec`
+  //const web3 = new Web3( new Web3.providers.HttpProvider(testnet) )
+  const web3 = new Web3(Web3.givenProvider || `https://kovan.infura.io/${process.env.INFURA_API_KEY}`)
   dispatch(web3Loaded(web3))
   return web3
 }
