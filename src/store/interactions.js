@@ -42,7 +42,7 @@ export const loadAccount = async (web3, dispatch) => {
 
 export const loadToken = async (web3, networkId, dispatch) => {
   try {
-    const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address)
+    const token = web3.eth.Contract(Token.abi, Token.networks[networkId].address)
     dispatch(tokenLoaded(token))
     return token
   } catch (error) {
@@ -53,7 +53,7 @@ export const loadToken = async (web3, networkId, dispatch) => {
 
 export const loadExchange = async (web3, networkId, dispatch) => {
   try {
-    const exchange = new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address)
+    const exchange = web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address)
     dispatch(exchangeLoaded(exchange))
     return exchange
   } catch (error) {
@@ -130,10 +130,18 @@ export const fillOrder = (dispatch, exchange, order, account) => {
   })
 }
 
-export const loadBalances = async (dispatch, web3, exchange, token, account) => {
+export const loadBalances = async (dispatch, web3, window, exchange, token, account) => {
   // Ether balance in wallet
-  const etherBalance = await web3.eth.getBalance(account)
-  dispatch(etherBalanceLoaded(etherBalance))
+  const ethereum = window.ethereum
+  if(ethereum) {
+    ethereum.on('accountsChanged', function (accounts) {
+      const account = accounts[0]
+      const etherBalance = await web3.eth.getBalance(account)
+      dispatch(etherBalanceLoaded(etherBalance))
+    })
+  }
+ //const etherBalance = await web3.eth.getBalance(account)
+ // dispatch(etherBalanceLoaded(etherBalance))
 
   // Token balance in wallet
   const tokenBalance = await token.methods.balanceOf(account).call()
