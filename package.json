@@ -1,7 +1,7 @@
 {
   "name": "the-peoples-exchange-dex",
   "version": "0.1.0",
-  "homepage" : "http://aimcomlt.github.io/myapp",
+  "homepage" : "http://aimcomlt.github.io/the-peoples-exchange-dex",
   "description": "Decentralized Ethereum Token Exchange",
   "author": "Aimcom",
   "private": true,
